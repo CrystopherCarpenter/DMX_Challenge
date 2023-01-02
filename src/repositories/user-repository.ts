@@ -1,7 +1,7 @@
 import { prisma } from '../config';
 import { Prisma } from '@prisma/client';
 
-async function findUser(username: string, select?: Prisma.UserSelect) {
+const findUser = async (username: string, select?: Prisma.UserSelect) => {
   const params: Prisma.UserFindUniqueArgs = {
     where: {
       username,
@@ -13,17 +13,15 @@ async function findUser(username: string, select?: Prisma.UserSelect) {
   }
 
   return prisma.user.findUnique(params);
-}
+};
 
-async function create(data: Prisma.UserUncheckedCreateInput) {
+const create = async (data: Prisma.UserUncheckedCreateInput) => {
   return prisma.user.create({
     data,
   });
-}
+};
 
-const userRepository = {
+export const userRepository = {
   findUser,
   create,
 };
-
-export default userRepository;

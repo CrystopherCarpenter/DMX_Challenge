@@ -1,14 +1,12 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import httpStatus from 'http-status';
+import { getData } from '../controllers';
 import { authentication } from '../middlewares';
 
 const breweriesRouter = Router();
 
-breweriesRouter
-  .get('/', authentication, (_req: Request, res: Response) => {
-    res.sendStatus(200);
-  })
-  .get('/*', (_req: Request, res: Response) => {
-    res.sendStatus(404);
-  });
+breweriesRouter.get('/', authentication, getData).get('/*', () => {
+  throw httpStatus.NOT_FOUND;
+});
 
 export { breweriesRouter };

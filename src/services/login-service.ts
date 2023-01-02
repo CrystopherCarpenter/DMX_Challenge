@@ -3,6 +3,7 @@ import { userRepository } from '../repositories';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import httpStatus from 'http-status';
 
 const login = async (params: LoginParams) => {
   const { username, password } = params;
@@ -18,7 +19,7 @@ const login = async (params: LoginParams) => {
 
 const getUser = async (username: string) => {
   const user = await userRepository.findUser(username, { id: true, username: true, password: true });
-  if (!user) throw invalidCredentialsError;
+  if (!user) throw httpStatus.UNAUTHORIZED;
 
   return user;
 };
@@ -35,15 +36,10 @@ const createSession = async (userId: string) => {
 
 const validatePassword = async (password: string, userPassword: string) => {
   const isPasswordValid = await bcrypt.compare(password, userPassword);
-  if (!isPasswordValid) throw invalidCredentialsError;
+  if (!isPasswordValid) throw httpStatus.UNAUTHORIZED;
 };
 
 type LoginParams = Pick<User, 'username' | 'password'>;
-
-const invalidCredentialsError = {
-  error: 'InvalidCredentialsError',
-  message: 'email or password are incorrect',
-};
 
 export const loginService = {
   login,

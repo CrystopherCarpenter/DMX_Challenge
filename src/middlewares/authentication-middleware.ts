@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../config';
 
 export const authentication = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.headers['authorization'];
-  if (!authorization) return res.sendStatus(401);
+  if (!authorization) throw httpStatus.UNAUTHORIZED;
 
   const token = authorization.replace('Bearer ', '');
-  if (!token) return res.sendStatus(401);
+  if (!token) throw httpStatus.UNAUTHORIZED;
 
   try {
     const { userId } = jwt.verify(token, '890798d0w8qdj7y') as { userId: string };
@@ -22,6 +23,6 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
 
     return next();
   } catch {
-    return res.sendStatus(401);
+    throw httpStatus.UNAUTHORIZED;
   }
 };

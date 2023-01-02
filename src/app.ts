@@ -1,10 +1,12 @@
 import express, { Express } from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 import { loadEnv, connectDb, disconnectDB } from './config';
 
 loadEnv();
 
-import { breweriesRouter, loginRouter } from './routers';
+import { breweriesRouter, loginRouter, userRouter } from './routers';
+import { handleApplicationErrors } from './middlewares/error-handling-middleware';
 
 var morgan = require('morgan');
 
@@ -15,7 +17,9 @@ app
   .use(cors())
   .use(express.json())
   .use('/breweries', breweriesRouter)
-  .use('/login', loginRouter);
+  .use('/login', loginRouter)
+  .use('/user', userRouter)
+  .use(handleApplicationErrors);
 
 export const startApp = (): Promise<Express> => {
   connectDb();

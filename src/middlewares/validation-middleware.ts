@@ -6,7 +6,7 @@ export const validateBody = (schema: ObjectSchema): ValidationMiddleware => {
   return validate(schema);
 };
 
-function validate(schema: ObjectSchema) {
+const validate = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { error } = schema.validate(req.body);
 
@@ -16,6 +16,6 @@ function validate(schema: ObjectSchema) {
       res.sendStatus(httpStatus.BAD_REQUEST);
     }
   };
-}
+};
 
 type ValidationMiddleware = (req: Request, res: Response, next: NextFunction) => void;

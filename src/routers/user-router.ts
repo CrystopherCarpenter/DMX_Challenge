@@ -1,13 +1,13 @@
 import { validateBody } from '../middlewares';
 import { userSchema } from '../schemas';
 import { Router } from 'express';
-import { login } from '../controllers';
+import { createUser } from '../controllers';
 import httpStatus from 'http-status';
 
-const loginRouter = Router();
+const userRouter = Router();
 
-loginRouter.post('/', validateBody(userSchema), login).post('/*', () => {
+userRouter.post('/', validateBody(userSchema), createUser).post('/*', () => {
   throw httpStatus.NOT_FOUND;
 });
 
-export { loginRouter };
+export { userRouter };
