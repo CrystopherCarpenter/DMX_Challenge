@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
+import { jwtConfig } from '../config';
 
 const login = async (params: LoginParams) => {
   const { username, password } = params;
@@ -25,7 +26,7 @@ const getUser = async (username: string) => {
 };
 
 const createSession = async (userId: string) => {
-  const token = jwt.sign({ userId }, '890798d0w8qdj7y');
+  const token = jwt.sign({ userId }, jwtConfig.secret as string);
   await sessionRepository.create({
     token,
     userId,

@@ -1,9 +1,10 @@
 import express, { Express } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
-import { loadEnv, connectDb, disconnectDB } from './config';
+import { connectDb, disconnectDB } from './database';
+import dotenv from 'dotenv';
 
-loadEnv();
+dotenv.config();
 
 import { breweriesRouter, loginRouter, userRouter } from './routers';
 import { handleApplicationErrors } from './middlewares/error-handling-middleware';

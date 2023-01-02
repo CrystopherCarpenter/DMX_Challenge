@@ -1,6 +1,8 @@
 import { app, startApp } from './app';
 
-const port = 5000;
+import { appConfig } from './config';
+
+const port = appConfig.port || 4000;
 
 const thrower = (err: unknown): void => {
   throw err;
